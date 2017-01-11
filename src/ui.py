@@ -89,7 +89,8 @@ class SeqPlanner(Form, Base, cui.TacticUiBase):
         self.assetBox.clear()
         assets, errors = tc.getAssetsInEp(ep)
         if assets:
-            self.assetBox.addItems(assets)
+            
+            self.assetBox.addItems(sorted(assets))
             errors.update(self.populateSequencePlanner(ep))
         if errors:
             self.showMessage(msg='Errors occurred while retrieving data from TACTIC',
@@ -212,15 +213,16 @@ class Item(Form2, Base2):
         return flag
         
     def addItems(self, items):
-        self.listBox.addItems(items)
+        while self.listBox.count() > 0:
+            items.append(self.listBox.takeItem(0).text())
+        self.listBox.addItems(sorted(items))
         self.updateNum()
         
     def addSelectedItems(self):
         assets = self.parentWin.getSelectedAssets()
         if not assets: return
         if self.addAssetsToTactic(assets):
-            self.listBox.addItems(assets)
-        self.updateNum()
+            self.addItems(assets)
     
     def removeItems(self):
         self.parentWin.setBusy()
