@@ -32,6 +32,7 @@ class SeqPlanner(Form, Base, cui.TacticUiBase):
         super(SeqPlanner, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle(__title__)
+        self.setWindowIcon(QIcon(osp.join(icon_path, 'ic_main.png')))
         #self.setStyleSheet(cui.styleSheet)
         self.setServer()
         
