@@ -42,7 +42,6 @@ class SeqPlanner(Form, Base, cui.TacticUiBase):
         self.projectBox = QComboBox(); self.projectBox.addItem('--Select Project--')
         self.epBox = QComboBox(); self.epBox.addItem('--Select Episode--')
         
-        self.sequences = {}
         self.sequenceItems = []
         self.collapsed = True
 
@@ -83,10 +82,17 @@ class SeqPlanner(Form, Base, cui.TacticUiBase):
     
     def getSelectedAssets(self):
         return [item.text() for item in self.assetBox.selectedItems()]
+    
+    def clearPlanner(self):
+        for item in self.sequenceItems:
+            item.deleteLater()
+        del self.sequenceItems[:]
         
     def populateEpisodeAssets(self, ep):
-        self.setBusy()
         self.assetBox.clear()
+        self.clearPlanner()
+        if not ep or ep == '--Select Episode--': return
+        self.setBusy()
         assets, errors = tc.getAssetsInEp(ep)
         if assets:
             
@@ -99,23 +105,22 @@ class SeqPlanner(Form, Base, cui.TacticUiBase):
         self.releaseBusy()
         
     def populateSequencePlanner(self, ep):
+        self.clearPlanner()
+        if not ep or ep == '--Select Episode--': return
         errors = {}
         seqs, err = tc.getSequences(ep)
         if err:
             errors.update(err)
-        for item in self.sequenceItems:
-            item.deleteLater()
-        del self.sequenceItems[:]
         for seq in seqs:
             assets = None
             assets, err = tc.assetsInSeq(seq)
             if err:
                 errors.update(err)
+            item = Item(self, title=seq, name=seq)
+            self.sequenceItems.append(item)
+            self.itemsLayout.addWidget(item)
             if assets:
-                item = Item(self, title=seq, name=seq)
                 item.addItems(assets)
-                self.sequenceItems.append(item)
-                self.itemsLayout.addWidget(item)
         return errors
         
     def showMessage(self, **kwargs):
