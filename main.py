@@ -6,8 +6,10 @@ Created on Jan 10, 2017
 import sip
 sip.setapi('QString', 2)
 import sys
-sys.path.append('D:/My/Tasks/workSpace')
-sys.path.append('D:/My/Tasks/workSpace/utilities')
+sys.path.insert(0, 'D:/My/Tasks/workSpace/utilities')
+sys.path.insert(0, 'D:/My/Tasks/workSpace')
+sys.path.append('R:/Python_Scripts/plugins/utilities')
+sys.path.append('R:/Python_Scripts/plugins')
 sys.path.append('R:/Pipe_Repo/Projects/TACTIC')
 from src import ui
 from PyQt4.QtGui import QApplication, QStyleFactory
