@@ -26,6 +26,11 @@ ui_path = osp.join(root_path, 'ui')
 icon_path = osp.join(root_path, 'icon')
 __title__ = 'Sequence Planner'
 
+
+USERS = ['qurban.ali', 'talha.ahmed', 'mohammad.bilal', 'sarmad.mushtaq',
+         'fayyaz.ahmed', 'irfan.nizar', 'muhammad.shareef', 'rafaiz.jilani',
+         'shahzaib.khan', 'raheel.qureshi', 'omer.siddiqui']
+
 Form, Base = uic.loadUiType(osp.join(ui_path, 'main.ui'))
 class SeqPlanner(Form, Base, cui.TacticUiBase):
     def __init__(self, parent=None):
@@ -169,10 +174,7 @@ class Item(Form2, Base2):
         self.removeButton.clicked.connect(self.removeItems)
         
     def userAllowed(self):
-        if iutil.getUsername() in ['qurban.ali', 'talha.ahmed',
-                'mohammad.bilal', 'umair.shahid', 'sarmad.mushtaq',
-                'fayyaz.ahmed', 'irfan.nizar', 'muhammad.shareef',
-                'rafaiz.jilani', 'shahzaib.khan', 'raheel.qureshi' ]:
+        if iutil.getUsername() in USERS:
             return True
 
     def collapse(self, event=None):
